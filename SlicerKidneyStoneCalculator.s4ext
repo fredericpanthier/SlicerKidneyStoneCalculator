@@ -28,7 +28,7 @@ contributors Frédéric Panthier, Lounès Illoul, Laurent Berthe, Steeve Doizi, 
 category Segmentation
 
 # url to icon (png, size 128x128 pixels)
-iconurl 
+iconurl https://raw.githubusercontent.com/fredericpanthier/SlicerKidneyStoneCalculator/master/icon.png
 
 # Give people an idea what to expect from this code
 #  - Is it just a test or something you stand behind?
@@ -38,7 +38,7 @@ status
 description volumetric evaluation of kidney stones and estimatation of lithotripsy time (surgical duration)
 
 # Space separated list of urls
-screenshoturls 
+screenshoturls https://raw.githubusercontent.com/fredericpanthier/SlicerKidneyStoneCalculator/master/screenshot.jpg
 
 # 0 or 1: Define if the extension should be enabled after its installation.
 enabled 1
