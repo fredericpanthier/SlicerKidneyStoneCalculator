@@ -1,3 +1,4 @@
+
 import os
 import unittest
 import vtk, qt, ctk, slicer
@@ -18,15 +19,20 @@ class KidneyStoneCalculator(ScriptedLoadableModule):
     self.parent.title = "KidneyStoneCalculator" # TODO make this more human readable by adding spaces
     self.parent.categories = ["Segmentation"]
     self.parent.dependencies = []
-    self.parent.contributors = ["Frédéric Panthier "] # replace with "Firstname Lastname (Organization)"
+    self.parent.contributors = ["Frédéric Panthier (Urology Department, Tenon Hospital, APHP, Paris & Uurology Department, Hôpital Européen Georges Pompidou, APHP, Paris)",\
+                                "Lounes Illoul (PIMM lab, Arts et Métiers Paris Tech, Paris)",\
+                                "Laurent Berthe (PIMM lab, Arts et Métiers Paris Tech, Paris)",\
+                                "Steeve Doizi (Urology Department, Tenon Hospital, APHP, Paris)",\
+                                "Oliver Traxer (Urology Department, Tenon Hospital, APHP, Paris)"] # replace with "Firstname Lastname (Organization)"
     self.parent.helpText = """
-This is an example of scripted loadable module bundled in an extension.
-It performs a simple thresholding on the input volume and optionally captures a screenshot.
+KidneyStoneCalculator consists in a volumetric evaluation of kidney stones and also provides information on surgical duration.
+Moreover, it provides the estimated time of lithotripsy and consequently the operative time.
+It provides in a few seconds a 3D view of the stone(s) and axial, coronal and sagittal views with CT-scan DICOMs.
+It's Licensed under the Slicer License.
 """
     self.parent.helpText += self.getDefaultModuleDocumentationLink()
     self.parent.acknowledgementText = """
-This file was originally developed by Jean-Christophe Fillion-Robin, Kitware Inc.
-and Steve Pieper, Isomics, Inc. and was partially funded by NIH grant 3P41RR013218-12S1.
+This file was originally developed by Frédéric Panthier, Urology Department, Tenon Hospital, APHP, Paris et Uurology Department, Hôpital Européen Georges Pompidou, APHP, Paris.
 """ # replace with organization, grant and thanks.
 
 #
@@ -69,21 +75,6 @@ class KidneyStoneCalculatorWidget(ScriptedLoadableModuleWidget):
     parametersFormLayout.addRow("Input Volume: ", self.inputSelector)
 
     #
-    # output volume selector
-    #
-    #self.outputSelector = slicer.qMRMLNodeComboBox()
-    #self.outputSelector.nodeTypes = ["vtkMRMLScalarVolumeNode"]
-    #self.outputSelector.selectNodeUponCreation = True
-    #self.outputSelector.addEnabled = True
-    #self.outputSelector.removeEnabled = True
-    #self.outputSelector.noneEnabled = True
-    #self.outputSelector.showHidden = False
-    #self.outputSelector.showChildNodeTypes = False
-    #self.outputSelector.setMRMLScene( slicer.mrmlScene )
-    #self.outputSelector.setToolTip( "Pick the output to the algorithm." )
-    #parametersFormLayout.addRow("Output Volume: ", self.outputSelector)
-
-    #
     # threshold value
     #
 
@@ -97,78 +88,44 @@ class KidneyStoneCalculatorWidget(ScriptedLoadableModuleWidget):
     self.thresholdSlider.enabled=False
     parametersFormLayout.addRow("Image threshold : min - max", self.thresholdSlider)
 
-    #self.imageThresholdSliderWidget = ctk.ctkSliderWidget()
-    #self.imageThresholdSliderWidget.singleStep = 0.1
-    #self.imageThresholdSliderWidget.minimum = -100
-    #self.imageThresholdSliderWidget.maximum = 100
-    #self.imageThresholdSliderWidget.value = 0.5
-    #self.imageThresholdSliderWidget.setToolTip("Set threshold value for computing the output image. Voxels that have intensities lower than this value will set to zero.")
-    #self.imageThresholdSliderWidget.enabled=False
-    #parametersFormLayout.addRow("Image threshold", self.imageThresholdSliderWidget)
-
-    # lithotripsy speed, mm3/min
-
-    #self.TLS_per_min=(
-    #("TFL_150_COM_Fine Dusting",35.68),
-    #("TFL_150_COM_Dusting",38.38),
-    #("TFL_150_COM_Fragmentation",41.21),
-    #("TFL_272_COM_Fine Dusting",45.93),
-    #("TFL_272_COM_Dusting",61.1),
-    #("TFL_272_COM_Fragmentation",66.96),
-    #("HoYAG_272_COM_Dusting",16.26),
-    #("HoYAG_272_COM_Fragmentation",31.74),
-    #("TFL_150_UA_Fine Dusting",37.77),
-    #("TFL_150_UA_Dusting",41.12),
-    #("TFL_150_UA_Fragmentation",50.16),
-    #("TFL_272_UA_Fine Dusting",44.88),
-    #("TFL_272_UA_Dusting",62.88),
-    #("TFL_272_UA_Fragmentation",66.57),
-    #("HoYAG_272_UA_Dusting",22.99),
-    #("HoYAG_272_UA_Fragmentation",38.6))
-
-    #self.tls_combobox=ctk.ctkComboBox()
-    #for i in range(len(self.TLS_per_min)):self.tls_combobox.addItem(self.TLS_per_min[i][0],i)
-    #self.tls_combobox.enabled=True
-    #parametersFormLayout.addRow(self.tls_combobox)
-
     #
 
     self.TLS_per_min_2=\
-    {"TFL":{"272":{"COM":{"0.15":{"vpp":0.007655,"f":[50,100,150,200]},
-                          "0.5":{"vpp":0.050916667,"f":[15,30,45,60]},
-                          "1.":{"vpp":0.0744,"f":[7.5,10,15,20,22.5,30]},
-                          },
-                  "UA":{"0.15":{"vpp":0.00748,"f":[50,100,150,200]},
-                        "0.5":{"vpp":0.0524,"f":[15,30,45,60]},
-                        "1.":{"vpp":0.073966667,"f":[7.5,10,15,20,22.5,30]},
+    {"TFL": {"272": {"COM": {"0.15": {"vpp": 0.007655, "f": [50, 100, 150, 200]},
+                             "0.5": {"vpp": 0.050916667,"f":[15, 30, 45, 60]},
+                             "1.": {"vpp": 0.0744, "f": [7.5, 10, 15, 20, 22.5, 30]},
+                             },
+                     "UA": {"0.15": {"vpp": 0.00748, "f": [50, 100, 150, 200]},
+                            "0.5": {"vpp": 0.0524, "f": [15, 30, 45, 60]},
+                            "1.": {"vpp": 0.073966667, "f": [7.5, 10, 15, 20, 22.5, 30]},
+                            },
+                     },
+             "150": {"COM": {"0.15": {"vpp": 0.0059466667, "f": [50, 100, 150, 200]},
+                             "0.5": {"vpp": 0.031983333, "f": [15, 30, 45, 60]},
+                             "1.": {"vpp": 0.045788889, "f": [7.5, 10, 15, 20, 22.5, 30]},
+                             },
+                     "UA": {"0.15": {"vpp": 0.006295, "f": [50, 100, 150, 200]},
+                            "0.5": {"vpp": 0.034266667, "f": [15, 30, 45, 60]},
+                            "1.": {"vpp": 0.055733333, "f": [7.5, 10, 15, 20, 22.5, 30]},
+                            },
+                     },
+             },
+    "HO:YAG": {"272": {"COM": {"0.5": {"vpp": 0.01355, "f": [15, 30, 45, 60]},
+                               "1.": {"vpp": 0.035266667, "f": [7.5, 10, 15, 20, 22.5, 30]}
+                               },
+                       "UA": {"0.5": {"vpp": 0.019158333, "f": [15, 30, 45, 60]},
+                              "1.": {"vpp": 0.042888889, "f": [7.5, 10, 15, 20, 22.5, 30]},
+                              },
                        },
-                  },
-           "150":{"COM":{"0.15":{"vpp":0.0059466667,"f":[50,100,150,200]},
-                          "0.5":{"vpp":0.031983333,"f":[15,30,45,60]},
-                          "1.":{"vpp":0.045788889,"f":[7.5,10,15,20,22.5,30]},
-                          },
-                  "UA":{"0.15":{"vpp":0.006295,"f":[50,100,150,200]},
-                        "0.5":{"vpp":0.034266667,"f":[15,30,45,60]},
-                        "1.":{"vpp":0.055733333,"f":[7.5,10,15,20,22.5,30]},
-                       },
-                  },
-          },
-    "HO:YAG":{"272":{"COM":{"0.5":{"vpp":0.01355,"f":[15,30,45,60]},
-                          "1.":{"vpp":0.035266667,"f":[7.5,10,15,20,22.5,30]}
-                    },
-                  "UA":{"0.5":{"vpp":0.019158333,"f":[15,30,45,60]},
-                        "1.":{"vpp":0.042888889,"f":[7.5,10,15,20,22.5,30]},
-                       },
-                  },
-             }
+               }
     }
 
     self.lpreset=\
-    [{"type":"TFL","name":"Fine Dusting","e":"0.15","f":100},
-     {"type":"TFL","name":"Dusting","e":"0.5","f":30},
-     {"type":"TFL","name":"Fragmentation","e":"1.","f":15},
-     {"type":"HO:YAG","name":"Dusting","e":"0.5","f":30},
-     {"type":"HO:YAG","name":"Fragmentation","e":"1.","f":15},
+    [{"type": "TFL", "name": "Fine Dusting", "e": "0.15", "f": 100},
+     {"type": "TFL", "name": "Dusting", "e": "0.5", "f": 30},
+     {"type": "TFL", "name": "Fragmentation", "e": "1.", "f": 15},
+     {"type": "HO:YAG", "name": "Dusting", "e": "0.5", "f": 30},
+     {"type": "HO:YAG", "name": "Fragmentation", "e": "1.", "f": 15},
     ]
 
     self.laser_combobox=ctk.ctkComboBox()
@@ -214,8 +171,6 @@ class KidneyStoneCalculatorWidget(ScriptedLoadableModuleWidget):
     self.minimumSizeSpinBox.suffix = " voxels"
     parametersFormLayout.addRow("Minimum size:", self.minimumSizeSpinBox)
     self.minimumSizeSpinBox.enabled=False
-    #self.minimumSizeLabel = self.scriptedEffect.addLabeledOptionsWidget("Minimum size:", self.minimumSizeSpinBox)
-
     #
     # Preview results in 3D
     #
@@ -246,7 +201,6 @@ class KidneyStoneCalculatorWidget(ScriptedLoadableModuleWidget):
 
     self.applyButton.connect('clicked(bool)', self.onApplyButton)
     self.inputSelector.connect("currentNodeChanged(vtkMRMLNode*)", self.onSelect)
-    #self.outputSelector.connect("currentNodeChanged(vtkMRMLNode*)", self.onSelect)
     self.splitVoxelsCheckBox.connect('clicked(bool)',self.onCheckSplit)
     self.previewShow3DCheckBox.connect('clicked(bool)',self.onCheckpreviewShow3D)
 
@@ -331,10 +285,6 @@ class KidneyStoneCalculatorWidget(ScriptedLoadableModuleWidget):
       range = logic.get_min_max_data(self.inputSelector.currentNode())
       if range is not None :
         print (range)
-        #self.imageThresholdSliderWidget.enabled=True
-        #self.imageThresholdSliderWidget.minimum = range[0]
-        #self.imageThresholdSliderWidget.maximum = range[1]
-        #self.imageThresholdSliderWidget.value = (range[0]+range[1])/2.
 
         self.thresholdSlider.enabled=True
         self.thresholdSlider.minimum = range[0]
@@ -345,12 +295,9 @@ class KidneyStoneCalculatorWidget(ScriptedLoadableModuleWidget):
   def onApplyButton(self):
     logic = KidneyStoneCalculatorLogic()
     enableScreenshotsFlag = self.enableScreenshotsFlagCheckBox.checked
-    #imageThreshold = self.imageThresholdSliderWidget.value
-    #image_hi = self.imageThresholdSliderWidget.maximum
     imageThreshold_min=self.thresholdSlider.minimumValue
     imageThreshold_max=self.thresholdSlider.maximumValue
     minimumVoxelsize = self.minimumSizeSpinBox.value if self.minimumSizeSpinBox.enabled else None
-    #tls_per_min=self.TLS_per_min[self.tls_combobox.currentData][1]
     
     if self.ManualPreset_combobox.currentText == "Manual":
         f=self.TLS_per_min_2[self.laser_combobox.currentText][self.d_fiber_combobox.currentText][self.TypeOfStone_combobox.currentText]\
@@ -394,8 +341,6 @@ class KidneyStoneCalculatorLogic(ScriptedLoadableModuleLogic):
     # Cet segmentation
     SegmentationNodeCol=slicer.mrmlScene.GetNodesByClass("vtkMRMLSegmentationNode")
     SegmentationNodeCol.UnRegister(slicer.mrmlScene)
-    #SegmentationNodeCol.GetNumberOfItems()
-    #SegmentationNode=SegmentationNodeCol.GetItemAsObject(0)
     b=False
     for SegmentationNode in SegmentationNodeCol:
       if SegmentationNode.GetName() == "rc_seg":
@@ -443,17 +388,11 @@ class KidneyStoneCalculatorLogic(ScriptedLoadableModuleLogic):
 
     logging.info('Processing started')
 
-    # Compute the thresholded output volume using the Threshold Scalar Volume CLI module
-    #cliParams = {'InputVolume': inputVolume.GetID(), 'OutputVolume': outputVolume.GetID(), 'ThresholdValue' : imageThreshold, 'ThresholdType' : 'Above'}
-    #cliNode = slicer.cli.run(slicer.modules.thresholdscalarvolume, None, cliParams, wait_for_completion=True)
-
     masterVolumeNode=inputVolume
 
     # Create segmentation
     SegmentationNodeCol=slicer.mrmlScene.GetNodesByClass("vtkMRMLSegmentationNode")
     SegmentationNodeCol.UnRegister(slicer.mrmlScene)
-    #SegmentationNodeCol.GetNumberOfItems()
-    #SegmentationNode=SegmentationNodeCol.GetItemAsObject(0)
     b=True
     for SegmentationNode in SegmentationNodeCol:
         if SegmentationNode.GetName() == "rc_seg":
@@ -485,10 +424,6 @@ class KidneyStoneCalculatorLogic(ScriptedLoadableModuleLogic):
 
     segmentEditorWidget.setActiveEffectByName("Threshold")
     effect = segmentEditorWidget.activeEffect()
-    #import vtkSegmentationCorePython as vtkSegmentationCore
-    #masterImageData=effect.masterVolumeImageData()
-    #lo, hi = masterImageData.GetScalarRange()
-    #print (lo, hi)
 
     # Fill by thresholding
     
@@ -513,10 +448,6 @@ class KidneyStoneCalculatorLogic(ScriptedLoadableModuleLogic):
     segStatLogic.getParameterNode().SetParameter("Segmentation", SegmentationNode.GetID())
     segStatLogic.getParameterNode().SetParameter("ScalarVolume", masterVolumeNode.GetID())
     
-    #segStatLogic.getParameterNode().SetParameter("ScalarVolume',)
-    #segStatLogic.getParameterNode().SetParameter("egmentation',)
-    #segStatLogic.getParameterNode().SetParameter("visibleSegmentsOnly',)
-
     segStatLogic.getParameterNode().SetParameter("ClosedSurfaceSegmentStatisticsPlugin.enabled","False")
     segStatLogic.getParameterNode().SetParameter("ClosedSurfaceSegmentStatisticsPlugin.surface_mm2.enabled","False")
     segStatLogic.getParameterNode().SetParameter("ClosedSurfaceSegmentStatisticsPlugin.volume_cm3.enabled","False")
@@ -537,10 +468,6 @@ class KidneyStoneCalculatorLogic(ScriptedLoadableModuleLogic):
     segStatLogic.getParameterNode().SetParameter("ScalarVolumeSegmentStatisticsPlugin.volume_cm3.enabled","True")
     segStatLogic.getParameterNode().SetParameter("ScalarVolumeSegmentStatisticsPlugin.voxel_count.enabled","False")
     
-    #segStatLogic.getParameterNode().SetParameter("LabelmapSegmentStatisticsPlugin.enabled","False")
-    #segStatLogic.getParameterNode().SetParameter("ScalarVolumeSegmentStatisticsPlugin.voxel_count.enabled","False")
-    #segStatLogic.getParameterNode().SetParameter("ScalarVolumeSegmentStatisticsPlugin.volume_cm3.enabled","False")
-    
     segStatLogic.computeStatistics()
     segStatLogic.exportToTable(resultsTableNode)
     col=resultsTableNode.AddColumn()
@@ -559,10 +486,6 @@ class KidneyStoneCalculatorLogic(ScriptedLoadableModuleLogic):
         resultsTableNode.SetCellText(i,id_colone_Tl,"{:d}:{:d}:{:.0f}".format(tl_i_min,tli_sec,tli_cent))
 
     segStatLogic.showTable(resultsTableNode)
-
-    ## Capture screenshot
-    #if enableScreenshots:
-    #  self.takeScreenshot('KidneyStoneCalculatorTest-Start','MyScreenshot',-1)
 
     logging.info('Processing completed !')
 

@@ -30,5 +30,8 @@ Dependencies
 1. Git    (www.git-scm.com)
 2. Slicer (www.slicer.org)
 
-*Developped by : Frédéric Panthier, Lounès Illoul, Laurent Berthe, Steeve Doizi, Oliver Traxer. Urology Department, Tenon Hospital, APHP, Paris*
+*Developped by : Frédéric Panthier (1,2), Lounès Illoul (3), Laurent Berthe (3), Steeve Doizi (1), Oliver Traxer (1).
+(1) Urology Department, Tenon Hospital, APHP, Paris.
+(2) Uurology Department, Hôpital Européen Georges Pompidou, APHP, Paris.
+(3) PIMM lab, Arts et Métiers Paris Tech, Paris.
  

@@ -18,11 +18,11 @@ depends NA
 build_subdirectory .
 
 # homepage
-homepage http://www.slicer.org/wiki/Documentation/Nightly/Extensions/KidneyStoneCalculator
+homepage https://www.slicer.org/wiki/Documentation/Nightly/Extensions/KidneyStoneCalculator
 
 # Firstname1 Lastname1 ([SubOrg1, ]Org1), Firstname2 Lastname2 ([SubOrg2, ]Org2)
 # For example: Jane Roe (Superware), John Doe (Lab1, Nowhere), Joe Bloggs (Noware)
-contributors Frédéric Panthier, Lounès Illoul, Laurent Berthe, Steeve Doizi, Oliver Traxer
+contributors Frédéric Panthier (APHP, Paris), Lounès Illoul (PIMM lab, Paris), Laurent Berthe (PIMM lab, Paris), Steeve Doizi (APHP, Paris), Oliver Traxer (APHP, Paris)
 
 # Match category in the xml description of the module (where it shows up in Modules menu)
 category Segmentation
