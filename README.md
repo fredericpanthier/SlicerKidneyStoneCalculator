@@ -30,5 +30,5 @@ Dependencies
 1. Git    (www.git-scm.com)
 2. Slicer (www.slicer.org)
 
-*Developped by : Frédéric Panthier, Lounès Illoul, Laurent Berthe, Steeve Doizi, Oliver Traxer*
+*Developped by : Frédéric Panthier, Lounès Illoul, Laurent Berthe, Steeve Doizi, Oliver Traxer. Urology Department, Tenon Hospital, APHP, Paris*
  
