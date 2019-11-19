@@ -24,6 +24,8 @@ Below, we describe the Instructions Guide to use KidneyStoneCalculator:
    - e. Select “show 3D” if you want to visualize in 3D-view the segmented stone(s)
    - f. Click “Apply” button. A table will appear to show the segment’s name, volume (mm3) and time of lithotripsy (min)
 
+[Wiki documentation](https://www.slicer.org/wiki/Documentation/Nightly/Modules/KidneyStoneCalculator)
+
 Dependencies
 =======================
 
