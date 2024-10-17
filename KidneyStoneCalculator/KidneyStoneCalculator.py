@@ -91,41 +91,57 @@ class KidneyStoneCalculatorWidget(ScriptedLoadableModuleWidget):
     #
 
     self.TLS_per_min_2=\
-    {"TFL": {"272": {"COM": {"0.15": {"vpp": 0.007655, "f": [50, 100, 150, 200]},
-                             "0.5": {"vpp": 0.050916667,"f":[15, 30, 45, 60]},
-                             "1.": {"vpp": 0.0744, "f": [7.5, 10, 15, 20, 22.5, 30]},
-                             },
-                     "UA": {"0.15": {"vpp": 0.00748, "f": [50, 100, 150, 200]},
-                            "0.5": {"vpp": 0.0524, "f": [15, 30, 45, 60]},
-                            "1.": {"vpp": 0.073966667, "f": [7.5, 10, 15, 20, 22.5, 30]},
-                            },
-                     },
-             "150": {"COM": {"0.15": {"vpp": 0.0059466667, "f": [50, 100, 150, 200]},
-                             "0.5": {"vpp": 0.031983333, "f": [15, 30, 45, 60]},
-                             "1.": {"vpp": 0.045788889, "f": [7.5, 10, 15, 20, 22.5, 30]},
-                             },
-                     "UA": {"0.15": {"vpp": 0.006295, "f": [50, 100, 150, 200]},
-                            "0.5": {"vpp": 0.034266667, "f": [15, 30, 45, 60]},
-                            "1.": {"vpp": 0.055733333, "f": [7.5, 10, 15, 20, 22.5, 30]},
-                            },
-                     },
-             },
-    "HO:YAG": {"272": {"COM": {"0.5": {"vpp": 0.01355, "f": [15, 30, 45, 60]},
-                               "1.": {"vpp": 0.035266667, "f": [7.5, 10, 15, 20, 22.5, 30]}
+    {"TFL (High Peak Power)": {"272": {"Hard Stone": {"0.15": {"vpp": 0.007655, "f":  [i for i in range(5,105,5)]},
+                                                       "0.5": {"vpp": 0.050916667,"f": [i for i in range(5,105,5)]},
+                                                        "1.": {"vpp": 0.0744, "f":  [i for i in range(5,105,5)]},
+                                                      },
+                                       "Soft Stone": {"0.15": {"vpp": 0.00748, "f":  [i for i in range(5,105,5)]},
+                                                       "0.5": {"vpp": 0.0524, "f":  [i for i in range(5,105,5)]},
+                                                        "1.": {"vpp": 0.073966667, "f":  [i for i in range(5,105,5)]},
+                                                      },
+                                       },
+                               "150": {"Hard Stone": {"0.15": {"vpp": 0.0059466667, "f":  [i for i in range(5,105,5)]},
+                                                       "0.5": {"vpp": 0.031983333, "f":  [i for i in range(5,105,5)]},
+                                                        "1.": {"vpp": 0.045788889, "f":  [i for i in range(5,105,5)]},
+                                                      },
+                                       "Soft Stone": {"0.15": {"vpp": 0.006295, "f":  [i for i in range(5,105,5)]},
+                                                       "0.5": {"vpp": 0.034266667, "f":  [i for i in range(5,105,5)]},
+                                                        "1.": {"vpp": 0.055733333, "f":  [i for i in range(5,105,5)]},
+                                                      },
+                                       },
                                },
-                       "UA": {"0.5": {"vpp": 0.019158333, "f": [15, 30, 45, 60]},
-                              "1.": {"vpp": 0.042888889, "f": [7.5, 10, 15, 20, 22.5, 30]},
-                              },
-                       },
-               }
+    "Ho:YAG (Long Pulse)": {"272": {"Hard Stone": {"0.5": {"vpp": 0.01355, "f":  [i for i in range(5,105,5)]},
+                                                    "1.": {"vpp": 0.035266667, "f":  [i for i in range(5,105,5)]}
+                                                   },
+                                    "Soft Stone": {"0.5": {"vpp": 0.019158333, "f":  [i for i in range(5,105,5)]},
+                                                    "1.": {"vpp": 0.042888889, "f":  [i for i in range(5,105,5)]},
+                                                   },
+                                    },
+                           },
+    "p-Tm:YAG (Captive Fragmenting)": {"270": {"Hard Stone":{"0.6": {"vpp" :0.047975, "f": [i for i in range(5,105,5)]},
+                                        "1.": {"vpp" :0.10565556, "f": [i for i in range(5,105,5)]},
+                                       },
+                         "Soft Stone":{"0.6": {"vpp" :0.047975, "f": [i for i in range(5,105,5)]},
+                                        "1.": {"vpp" :0.08334444, "f": [i for i in range(5,105,5)]},
+                                       },
+                         },
+                 "200": {"Hard Stone":{"0.6": {"vpp" :0.03073333, "f": [i for i in range(5,105,5)]},
+                                        "1.": {"vpp" :0.08706667, "f": [i for i in range(5,105,5)]},
+                                       },
+                         "Soft Stone":{"0.6": {"vpp" :0.03843333, "f": [i for i in range(5,105,5)]},
+                                        "1.": {"vpp" :0.0622, "f": [i for i in range(5,105,5)]},
+                                       },
+                         }, 
+                },                       
     }
 
     self.lpreset=\
-    [{"type": "TFL", "name": "Fine Dusting", "e": "0.15", "f": 100},
-     {"type": "TFL", "name": "Dusting", "e": "0.5", "f": 30},
-     {"type": "TFL", "name": "Fragmentation", "e": "1.", "f": 15},
-     {"type": "HO:YAG", "name": "Dusting", "e": "0.5", "f": 30},
-     {"type": "HO:YAG", "name": "Fragmentation", "e": "1.", "f": 15},
+    [{"type": "p-Tm:YAG (Captive Fragmenting)", "name": "Dusting", "e": "0.6", "f": 20},
+     {"type": "p-Tm:YAG (Captive Fragmenting)", "name": "Fragmentation", "e": "1.", "f": 15},
+     {"type": "TFL (High Peak Power)", "name": "Dusting", "e": "0.5", "f": 30},
+     {"type": "TFL (High Peak Power)", "name": "Fragmentation", "e": "1.", "f": 15},
+     {"type": "Ho:YAG (Long Pulse)", "name": "Dusting", "e": "0.5", "f": 30},
+     {"type": "Ho:YAG (Long Pulse)", "name": "Fragmentation", "e": "1.", "f": 15},
     ]
 
     self.laser_combobox=ctk.ctkComboBox()
@@ -459,11 +475,11 @@ class KidneyStoneCalculatorLogic(ScriptedLoadableModuleLogic):
     segStatLogic.getParameterNode().SetParameter("LabelmapSegmentStatisticsPlugin.voxel_count.enabled","False")
     
     segStatLogic.getParameterNode().SetParameter("ScalarVolumeSegmentStatisticsPlugin.enabled","True")
-    segStatLogic.getParameterNode().SetParameter("ScalarVolumeSegmentStatisticsPlugin.max.enabled","False")
-    segStatLogic.getParameterNode().SetParameter("ScalarVolumeSegmentStatisticsPlugin.mean.enabled","False")
-    segStatLogic.getParameterNode().SetParameter("ScalarVolumeSegmentStatisticsPlugin.median.enabled","False")
-    segStatLogic.getParameterNode().SetParameter("ScalarVolumeSegmentStatisticsPlugin.min.enabled","False")
-    segStatLogic.getParameterNode().SetParameter("ScalarVolumeSegmentStatisticsPlugin.stdev.enabled","False")
+    segStatLogic.getParameterNode().SetParameter("ScalarVolumeSegmentStatisticsPlugin.max.enabled","True")
+    segStatLogic.getParameterNode().SetParameter("ScalarVolumeSegmentStatisticsPlugin.mean.enabled","True")
+    segStatLogic.getParameterNode().SetParameter("ScalarVolumeSegmentStatisticsPlugin.median.enabled","True")
+    segStatLogic.getParameterNode().SetParameter("ScalarVolumeSegmentStatisticsPlugin.min.enabled","True")
+    segStatLogic.getParameterNode().SetParameter("ScalarVolumeSegmentStatisticsPlugin.stdev.enabled","True")
     segStatLogic.getParameterNode().SetParameter("ScalarVolumeSegmentStatisticsPlugin.volume_mm3.enabled","True")
     segStatLogic.getParameterNode().SetParameter("ScalarVolumeSegmentStatisticsPlugin.volume_cm3.enabled","True")
     segStatLogic.getParameterNode().SetParameter("ScalarVolumeSegmentStatisticsPlugin.voxel_count.enabled","False")
@@ -473,6 +489,9 @@ class KidneyStoneCalculatorLogic(ScriptedLoadableModuleLogic):
     col=resultsTableNode.AddColumn()
     col.SetName("Time of lithotripsy [min:sec:1/100s]")
     id_colone_vmm3=resultsTableNode.GetColumnIndex("Volume [mm3]")
+    if id_colone_vmm3 == -1: id_colone_vmm3=resultsTableNode.GetColumnIndex("Volume mm3")
+    assert id_colone_vmm3 != -1
+    
     id_colone_Tl=resultsTableNode.GetColumnIndex("Time of lithotripsy [min:sec:1/100s]")
 
     import math
@@ -538,3 +557,4 @@ class KidneyStoneCalculatorTest(ScriptedLoadableModuleTest):
     logic = KidneyStoneCalculatorLogic()
     self.assertIsNotNone( logic.hasImageData(volumeNode) )
     self.delayDisplay('Test passed!')
+
